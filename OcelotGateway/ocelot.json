@@ -1,0 +1,84 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/aggregator/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UpstreamPathTemplate": "/aggregator/{everything}",
+      "UpstreamHttpMethod": [ "GET", "POST", "PUT", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/banking/withdraw",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UpstreamPathTemplate": "/api/banking/withdraw",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DangerousAcceptAnyServerCertificate": true
+    },
+    {
+      "DownstreamPathTemplate": "/api/banking/deposit",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UpstreamPathTemplate": "/api/banking/deposit",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DangerousAcceptAnyServerCertificate": true
+    },
+    {
+      "DownstreamPathTemplate": "/api/banking/payment",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UpstreamPathTemplate": "/api/banking/payment",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DangerousAcceptAnyServerCertificate": true
+    },
+    {
+      "DownstreamPathTemplate": "/api/banking/transactions/{transactionId}/approve",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UpstreamPathTemplate": "/api/banking/transactions/{transactionId}/approve",
+      "UpstreamHttpMethod": [ "POST" ],
+      "DangerousAcceptAnyServerCertificate": true
+    },
+    {
+      "DownstreamPathTemplate": "/api/banking/transactions",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "UpstreamPathTemplate": "/api/banking/transactions",
+      "UpstreamHttpMethod": [ "GET" ],
+      "DangerousAcceptAnyServerCertificate": true
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5000"
+  }
+}
