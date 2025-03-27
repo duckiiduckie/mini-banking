@@ -1,17 +1,7 @@
-using Aggregator.Protos;
+using Aggregator.DTOs;
 using Aggregator.Services;
 using Banking.API;
 using Microsoft.AspNetCore.Mvc;
-using ApproveTransactionRequest = Aggregator.Protos.ApproveTransactionRequest;
-using ApproveTransactionResponse = Aggregator.Protos.ApproveTransactionResponse;
-using DepositRequest = Aggregator.Protos.DepositRequest;
-using DepositResponse = Aggregator.Protos.DepositResponse;
-using GetTransactionHistoryRequest = Aggregator.Protos.GetTransactionHistoryRequest;
-using GetTransactionHistoryResponse = Aggregator.Protos.GetTransactionHistoryResponse;
-using PaymentRequest = Aggregator.Protos.PaymentRequest;
-using PaymentResponse = Aggregator.Protos.PaymentResponse;
-using WithdrawRequest = Aggregator.Protos.WithdrawRequest;
-using WithdrawResponse = Aggregator.Protos.WithdrawResponse;
 
 namespace Aggregator.Controllers;
 
@@ -27,7 +17,7 @@ public class BankingController : ControllerBase
     }
 
     [HttpPost("withdraw")]
-    public async Task<ActionResult<WithdrawResponse>> Withdraw([FromBody] WithdrawRequest request)
+    public async Task<ActionResult<WithdrawResponseHttp>> Withdraw([FromBody] WithdrawRequestHttp request)
     {
         try
         {

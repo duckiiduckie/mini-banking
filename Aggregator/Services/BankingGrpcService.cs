@@ -1,23 +1,13 @@
-using Aggregator.Protos;
+using Aggregator.DTOs;
 using Banking.API;
 using Grpc.Net.Client;
-using Microsoft.Extensions.Configuration;
-using ApproveTransactionRequest = Aggregator.Protos.ApproveTransactionRequest;
-using ApproveTransactionResponse = Aggregator.Protos.ApproveTransactionResponse;
-using DepositRequest = Aggregator.Protos.DepositRequest;
-using DepositResponse = Aggregator.Protos.DepositResponse;
-using GetTransactionHistoryRequest = Aggregator.Protos.GetTransactionHistoryRequest;
-using GetTransactionHistoryResponse = Aggregator.Protos.GetTransactionHistoryResponse;
-using PaymentRequest = Aggregator.Protos.PaymentRequest;
-using PaymentResponse = Aggregator.Protos.PaymentResponse;
-using WithdrawRequest = Aggregator.Protos.WithdrawRequest;
-using WithdrawResponse = Aggregator.Protos.WithdrawResponse;
+
 
 namespace Aggregator.Services;
 
 public interface IBankingGrpcService
 {
-    Task<WithdrawResponse> WithdrawAsync(WithdrawRequest request);
+    Task<WithdrawResponseHttp> WithdrawAsync(WithdrawRequestHttp request);
     Task<DepositResponse> DepositAsync(DepositRequest request);
     Task<PaymentResponse> PaymentAsync(PaymentRequest request);
     Task<ApproveTransactionResponse> ApproveTransactionAsync(ApproveTransactionRequest request);
@@ -26,18 +16,37 @@ public interface IBankingGrpcService
 
 public class BankingGrpcService : IBankingGrpcService
 {
-    private readonly Protos.BankingService.BankingServiceClient _client;
+    private readonly BankingService.BankingServiceClient _client;
 
     public BankingGrpcService(IConfiguration configuration)
     {
         var bankingApiUrl = configuration["BankingApi:GrpcUrl"] ?? "http://localhost:5001";
         var channel = GrpcChannel.ForAddress(bankingApiUrl);
-        _client = new Protos.BankingService.BankingServiceClient(channel);
+        _client = new BankingService.BankingServiceClient(channel);
     }
 
-    public async Task<WithdrawResponse> WithdrawAsync(WithdrawRequest request)
+    public async Task<WithdrawResponseHttp> WithdrawAsync(WithdrawRequestHttp requestHttp)
     {
-        return await _client.WithdrawAsync(request);
+        try
+        {
+            var request = new WithdrawRequest
+            {
+                CustomerId = requestHttp.CustomerId,
+                Amount = requestHttp.Amount,
+                Description = requestHttp.Description
+            };
+            var response = await _client.WithdrawAsync(request);
+            return new WithdrawResponseHttp
+            {
+                TransactionId = response.TransactionId,
+                Status = "OK",
+            };
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public async Task<DepositResponse> DepositAsync(DepositRequest request)

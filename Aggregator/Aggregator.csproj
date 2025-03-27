@@ -16,7 +16,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="Protos\banking.proto" GrpcServices="Client" />
+        <Protobuf Include="..\Banking.API\Protos\banking.proto" GrpcServices="Client"/>
     </ItemGroup>
 
     <ItemGroup>
